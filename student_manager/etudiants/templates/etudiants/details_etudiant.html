@@ -1,0 +1,45 @@
+<!-- templates/etudiants/details_etudiant.html -->
+{% extends 'base.html' %}
+
+{% block title %}Détails de {{ etudiant.prenom }} {{ etudiant.nom }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Détails de l'étudiant</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                {% if etudiant.photo %}
+                    <img src="{{ etudiant.photo.url }}" alt="Photo" class="photo-grande mb-3">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x300?text=Pas+de+photo" alt="Pas de photo" class="photo-grande mb-3">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 150px;">Nom complet</th>
+                        <td>{{ etudiant.prenom }} {{ etudiant.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Matricule</th>
+                        <td>{{ etudiant.matricule }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ etudiant.email }}</td>
+                    </tr>
+                </table>
+
+                <div class="mt-3">
+                    <a href="{% url 'etudiants:modifier_etudiant' etudiant.id %}" class="btn btn-warning">Modifier</a>
+                    <a href="{% url 'etudiants:supprimer_etudiant' etudiant.id %}" class="btn btn-danger">Supprimer</a>
+                    <a href="{% url 'etudiants:liste_etudiants' %}" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!-- templates/etudiants/confirmation_suppression.html -->
+{% extends 'base.html' %}
+
+{% block title %}Confirmation de suppression{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0">Confirmation de suppression</h2>
+            </div>
+            <div class="card-body text-center">
+                <p class="lead">Êtes-vous sûr de vouloir supprimer l'étudiant suivant ?</p>
+
+                <div class="alert alert-warning">
+                    <strong>{{ etudiant.prenom }} {{ etudiant.nom }}</strong><br>
+                    Matricule: {{ etudiant.matricule }}<br>
+                    Email: {{ etudiant.email }}
+                </div>
+
+                <p class="text-danger">Cette action est irréversible !</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+                    <a href="{% url 'etudiants:details_etudiant' etudiant.id %}" class="btn btn-secondary">Annuler</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

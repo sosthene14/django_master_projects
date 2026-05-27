@@ -1,0 +1,80 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="catalog-header-section section-padding-small">
+    <div class="container text-center">
+        <span class="section-tag">Catalogue</span>
+        <h1 class="catalog-main-title font-serif">
+            {% if selected_category %}
+                {{ selected_category.name }}
+            {% else %}
+                Les Pièces d'Exception
+            {% endif %}
+        </h1>
+        
+        {% if selected_category and selected_category.description %}
+            <p class="catalog-subtitle font-serif italic">{{ selected_category.description }}</p>
+        {% else %}
+            <p class="catalog-subtitle">Des silhouettes dessinées avec sobriété, faites pour traverser les saisons.</p>
+        {% endif %}
+        
+        <div class="divider-small"></div>
+    </div>
+</section>
+
+
+<section class="filters-section">
+    <div class="container">
+        <div class="categories-filter-bar">
+            <a href="{% url 'catalog:product_list' %}" class="filter-tag {% if not selected_category %}active{% endif %}">
+                Tout Voir
+            </a>
+            {% for category in categories %}
+            <a href="{% url 'catalog:product_list_by_category' category.slug %}" class="filter-tag {% if selected_category.id == category.id %}active{% endif %}">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<section class="catalog-products-section section-padding-small">
+    <div class="container">
+        {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card reveal-up">
+                    <a href="{% url 'catalog:product_detail' product.slug %}" class="product-card-image-link">
+                        <div class="product-card-image">
+                            <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                            {% if not product.is_available %}
+                            <span class="badge badge-soldout">Épuisé</span>
+                            {% endif %}
+                            {% if product.is_featured %}
+                            <span class="badge badge-featured">Édition Limitée</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="product-card-info">
+                        <span class="product-card-category">{{ product.category.name }}</span>
+                        <h3 class="product-card-title font-serif">
+                            <a href="{% url 'catalog:product_detail' product.slug %}">{{ product.name }}</a>
+                        </h3>
+                        <span class="product-card-price">{{ product.price|floatformat:0 }} FCFA</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-products text-center">
+                <i class="fa-solid fa-spinner-third spinner-large"></i>
+                <h3 class="font-serif">Aucune pièce disponible</h3>
+                <p>Nos artisans travaillent actuellement sur la prochaine parution. Revenez très bientôt.</p>
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Voir toute la collection</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

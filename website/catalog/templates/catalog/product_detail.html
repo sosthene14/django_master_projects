@@ -1,0 +1,187 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="product-detail-section section-padding-small">
+    <div class="container">
+        
+
+        <div class="breadcrumb">
+            <a href="{% url 'catalog:home' %}">Atelier</a>
+            <span class="separator">/</span>
+            <a href="{% url 'catalog:product_list' %}">Toutes les pièces</a>
+            <span class="separator">/</span>
+            <a href="{% url 'catalog:product_list_by_category' product.category.slug %}">{{ product.category.name }}</a>
+            <span class="separator">/</span>
+            <span class="current">{{ product.name }}</span>
+        </div>
+
+        <div class="product-detail-grid">
+            <!-- Colonne Image (Gauche) -->
+            <div class="product-detail-visual reveal-fade">
+                <div class="product-detail-image-wrapper">
+                    <img src="{% static product.image_path %}" alt="{{ product.name }}" id="mainProductImage">
+                    {% if not product.is_available %}
+                    <span class="badge badge-detail-soldout">Épuisé</span>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="product-detail-info reveal-fade" style="animation-delay: 0.1s;">
+                <span class="product-detail-category">{{ product.category.name }}</span>
+                <h1 class="product-detail-title font-serif">{{ product.name }}</h1>
+                <span class="product-detail-price">{{ product.price|floatformat:0 }} FCFA</span>
+                
+                <div class="product-detail-description">
+                    <p>{{ product.description }}</p>
+                </div>
+
+                <!-- Sélecteurs Purement Visuels (Esthétique Luxe) -->
+                <div class="product-variants">
+                    <div class="variant-group">
+                        <span class="variant-label">Teinte</span>
+                        <div class="color-chips">
+                            <span class="color-chip active" style="background-color: #5E4337;" title="Terre d'Ombre"></span>
+                            <span class="color-chip" style="background-color: #2B1E19;" title="Chocolat Profond"></span>
+                            <span class="color-chip" style="background-color: #D9D2C9;" title="Écru Naturel"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="variant-group">
+                        <span class="variant-label">Taille</span>
+                        <div class="size-chips">
+                            <button class="size-chip">36</button>
+                            <button class="size-chip active">38</button>
+                            <button class="size-chip">40</button>
+                            <button class="size-chip">42</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    {% if product.is_available %}
+                        <button class="btn btn-primary btn-block btn-icon" id="openInquiryBtn">
+                            <i class="fa-regular fa-envelope"></i> Faire une Demande d'Information
+                        </button>
+                    {% else %}
+                        <button class="btn btn-disabled btn-block" disabled>Pièce Temporairement Indisponible</button>
+                    {% endif %}
+                </div>
+
+           
+                <div class="product-accordion">
+                    <div class="accordion-item active">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            Matières & Entretien <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <ul class="details-list">
+                                {% for detail in product.get_details_list %}
+                                <li>{{ detail }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            Service sur Mesure & Showroom <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Toutes nos créations peuvent être adaptées à vos mesures dans notre Showroom de Dakar. Vous pouvez réserver un essayage privé avec un tailleur en effectuant une demande d'information ci-dessus.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            Livraison & Retours Conscients <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Dans le respect de notre charte slow-fashion, les livraisons sont groupées chaque semaine afin de limiter l'empreinte carbone. Emballage 100% recyclable. Retours gratuits sous 14 jours.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    
+        {% if related_products %}
+        <div class="related-products-section section-padding-small">
+            <h2 class="related-title font-serif text-center">Compléter la silhouette</h2>
+            <div class="products-grid">
+                {% for related in related_products %}
+                <div class="product-card">
+                    <a href="{% url 'catalog:product_detail' related.slug %}" class="product-card-image-link">
+                        <div class="product-card-image">
+                            <img src="{% static related.image_path %}" alt="{{ related.name }}">
+                        </div>
+                    </a>
+                    <div class="product-card-info">
+                        <span class="product-card-category">{{ related.category.name }}</span>
+                        <h3 class="product-card-title font-serif">
+                            <a href="{% url 'catalog:product_detail' related.slug %}">{{ related.name }}</a>
+                        </h3>
+                        <span class="product-card-price">{{ related.price|floatformat:0 }} FCFA</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+
+<div class="modal-overlay" id="inquiryModal">
+    <div class="modal-container reveal-scale">
+        <button class="modal-close" id="closeInquiryBtn" aria-label="Fermer la modal">&times;</button>
+        
+        <div class="modal-grid">
+            <div class="modal-image-col">
+                <img src="{% static product.image_path %}" alt="{{ product.name }}">
+            </div>
+            
+            <div class="modal-form-col">
+                <span class="form-tag">Demande Personnalisée</span>
+                <h2 class="modal-title font-serif">{{ product.name }}</h2>
+                <p class="modal-subtitle">Un conseiller de l'atelier va prendre contact avec vous pour valider les mesures, la disponibilité et les détails de livraison de cette pièce.</p>
+                
+                <form id="inquiryForm" action="{% url 'catalog:inquiry_submit' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form.product }}
+                    
+                    <div class="form-group">
+                        <label for="id_full_name">Nom & Prénom</label>
+                        {{ form.full_name }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email">Adresse Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Téléphone (facultatif)</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_message">Votre Demande</label>
+                        {{ form.message }}
+                    </div>
+                    
+                    <div class="form-actions-modal">
+                        <button type="submit" class="btn btn-primary btn-block" id="submitFormBtn">
+                            <span class="btn-text">Envoyer ma Demande</span>
+                            <span class="btn-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Envoi...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

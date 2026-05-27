@@ -1,0 +1,84 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="contact-header section-padding-small">
+    <div class="container text-center">
+        <span class="section-tag">Rendez-vous</span>
+        <h1 class="contact-title font-serif">Entrer en Résonance</h1>
+        <p class="contact-subtitle">Visitez notre showroom dakarois ou faites-nous part de vos projets de couture.</p>
+        <div class="divider-small"></div>
+    </div>
+</section>
+
+<section class="contact-section section-padding-small">
+    <div class="container">
+        <div class="contact-grid">
+
+            <div class="contact-form-col reveal-fade">
+                <h2 class="font-serif form-heading">Écrivez à l'Atelier</h2>
+                <p class="form-sub-heading">Pour toute question sur nos collections, réservations de showroom ou demandes spécifiques.</p>
+                
+                <form id="contactForm" action="{% url 'catalog:contact' %}" method="POST" class="contact-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_full_name">Nom Complet</label>
+                        {{ form.full_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email">Adresse Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Téléphone (Optionnel)</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_message">Votre message</label>
+                        {{ form.message }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="submitContactBtn">
+                        <span class="btn-text">Envoyer mon Message</span>
+                        <span class="btn-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Envoi...</span>
+                    </button>
+                </form>
+            </div>
+
+
+            <div class="contact-info-col reveal-fade" style="animation-delay: 0.1s;">
+                <div class="showroom-details">
+                    <h2 class="font-serif">Le Showroom Dakar</h2>
+                    <p class="showroom-address">
+                        Atelier Terre<br>
+                        Avenue Cheikh Anta Diop, Fann, Dakar<br>
+                        Sénégal
+                    </p>
+                    
+                    <div class="showroom-meta-item">
+                        <span class="meta-label">Horaires d'ouverture</span>
+                        <span class="meta-value">Du mardi au samedi : 11h00 — 19h00<br>Sur rendez-vous uniquement</span>
+                    </div>
+
+                    <div class="showroom-meta-item">
+                        <span class="meta-label">Nous contacter</span>
+                        <span class="meta-value">
+                            <a href="mailto:showroom@atelierterre.com" class="text-link">showroom@atelierterre.com</a><br>
+                            <a href="tel:+221338245678" class="text-link">+221 33 824 56 78</a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="showroom-visual">
+                    <img src="{% static 'images/hero_bg.png' %}" alt="Architecture showroom minimaliste">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

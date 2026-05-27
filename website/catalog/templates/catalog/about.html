@@ -1,0 +1,74 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="about-header section-padding-small">
+    <div class="container text-center">
+        <span class="section-tag">Manifeste</span>
+        <h1 class="about-title font-serif">L'Art de la Matière, le Temps Suspendu</h1>
+        <p class="about-subtitle">Fondée dans le respect du geste artisanal, notre maison réinvente le luxe par le minimalisme.</p>
+        <div class="divider-small"></div>
+    </div>
+</section>
+
+
+<section class="about-story-section section-padding-small">
+    <div class="container">
+        <div class="story-grid">
+            <div class="story-image reveal-fade">
+                <img src="{% static 'images/hero_bg.png' %}" alt="Atelier de drapage Atelier Terre">
+            </div>
+            
+            <div class="story-text reveal-fade" style="animation-delay: 0.1s;">
+                <h2 class="font-serif">L'Origine du Geste</h2>
+                <p>Né d'une volonté de revenir aux sources mêmes du vêtement, <strong>Atelier Terre</strong> se structure autour d'une idée fondamentale : la forme doit servir la matière, et la matière doit respecter le corps.</p>
+                <p>Nos patrons sont conçus pour limiter au maximum les chutes de tissu. Nos finitions sont cousues à la main dans notre atelier à taille humaine. Nous rejetons le calendrier effréné des collections industrielles pour créer à notre propre rythme, proposant des parutions numérotées et intemporelles.</p>
+                
+                <blockquote class="about-quote font-serif">
+                    "Un vêtement bien conçu n'est pas un artifice. C'est une architecture calme qui accompagne le mouvement du corps."
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="about-commitments section-padding bg-warm-light">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-tag">Engagements</span>
+            <h2 class="section-title font-serif">Nos Trois Piliers Éthiques</h2>
+        </div>
+        
+        <div class="commitments-grid">
+            <div class="commitment-card reveal-up">
+                <div class="commitment-icon"><i class="fa-solid fa-seedling"></i></div>
+                <h3 class="font-serif">100% Organique</h3>
+                <p>Toutes nos pièces sont réalisées à partir de fibres vierges certifiées (lin, coton biologique, alpaga sauvage). Aucun traitement synthétique n'est appliqué pour préserver l'authenticité et le toucher unique de la matière.</p>
+            </div>
+
+            <div class="commitment-card reveal-up" style="animation-delay: 0.1s;">
+                <div class="commitment-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                <h3 class="font-serif">Artisanat Local</h3>
+                <p>Nous travaillons en collaboration étroite avec des tisseurs locaux et des artisans familiaux au Sénégal et en Afrique de l'Ouest. Ce circuit ultra-court préserve un savoir-faire rare et garantit des conditions de travail justes.</p>
+            </div>
+
+            <div class="commitment-card reveal-up" style="animation-delay: 0.2s;">
+                <div class="commitment-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                <h3 class="font-serif">Zéro Surproduction</h3>
+                <p>Nous produisons en séries très limitées ou à la demande. Les clients peuvent réserver ou demander l'ajustement de nos silhouettes emblématiques, évitant ainsi le gaspillage et favorisant une relation durable.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="about-cta section-padding text-center" style="background-image: linear-gradient(rgba(43, 30, 25, 0.4), rgba(43, 30, 25, 0.5)), url('{% static 'images/hero_bg.png' %}'); background-size: cover; background-position: center; color: white;">
+    <div class="container">
+        <h2 class="font-serif reveal-fade" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Découvrez notre vestiaire d'exception</h2>
+        <p class="reveal-fade" style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Laissez-vous séduire par des silhouettes pures dessinées pour traverser le temps.</p>
+        <a href="{% url 'catalog:product_list' %}" class="btn btn-primary reveal-fade">Explorer la Collection</a>
+    </div>
+</section>
+{% endblock %}

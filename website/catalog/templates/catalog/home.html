@@ -1,0 +1,130 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero-section" style="background-image: linear-gradient(rgba(43, 30, 25, 0.4), rgba(43, 30, 25, 0.5)), url('{% static 'images/hero_bg.png' %}');">
+    <div class="hero-container">
+        <h1 class="hero-title reveal-fade">La pureté des lignes.<br>L'art de la matière.</h1>
+        <p class="hero-subtitle reveal-fade" style="animation-delay: 0.2s;">Une collection épurée aux teintes organiques et matières nobles.</p>
+        <div class="hero-actions reveal-fade" style="animation-delay: 0.4s;">
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Découvrir les Pièces</a>
+            <a href="{% url 'catalog:about' %}" class="btn btn-secondary">Notre Manifeste</a>
+        </div>
+    </div>
+</section>
+
+<section class="manifesto-section section-padding">
+    <div class="container text-center">
+        <span class="section-tag">Philosophie</span>
+        <h2 class="manifesto-title font-serif">L'Éloge de la Lenteur</h2>
+        <p class="manifesto-text lead">
+            À l'opposé du tumulte éphémère, Atelier Terre façonne des vêtements d'une élégance calme.
+            Chaque pièce est dessinée pour durer, taillée dans des fibres 100 % naturelles, et déclinée
+            dans une palette intemporelle de bruns profonds, de sable doux et d'argile chaleureuse.
+        </p>
+        <div class="divider"></div>
+    </div>
+</section>
+
+
+{% if categories %}
+<section class="collections-section section-padding bg-warm-light">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-tag">Parcourir</span>
+            <h2 class="section-title font-serif">Les Vestiaires</h2>
+        </div>
+        
+        <div class="collections-grid">
+            {% for category in categories %}
+            <a href="{% url 'catalog:product_list_by_category' category.slug %}" class="collection-card reveal-up">
+                <div class="collection-card-image">
+                    <img src="{% static category.image_path %}" alt="{{ category.name }}">
+                    <div class="collection-card-overlay"></div>
+                </div>
+                <div class="collection-card-info">
+                    <h3 class="collection-card-title font-serif">{{ category.name }}</h3>
+                    <span class="collection-card-link">Voir la collection <i class="fa-solid fa-arrow-right-long"></i></span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+{% if featured_products %}
+<section class="featured-section section-padding">
+    <div class="container">
+        <div class="section-header flex-header">
+            <div>
+                <span class="section-tag">Sélection</span>
+                <h2 class="section-title font-serif">Créations Phares</h2>
+            </div>
+            <a href="{% url 'catalog:product_list' %}" class="text-link">Toutes les pièces <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+
+        <div class="products-grid">
+            {% for product in featured_products %}
+            <div class="product-card reveal-up">
+                <a href="{% url 'catalog:product_detail' product.slug %}" class="product-card-image-link">
+                    <div class="product-card-image">
+                        <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                        {% if not product.is_available %}
+                        <span class="badge badge-soldout">Épuisé</span>
+                        {% endif %}
+                    </div>
+                </a>
+                <div class="product-card-info">
+                    <span class="product-card-category">{{ product.category.name }}</span>
+                    <h3 class="product-card-title font-serif">
+                        <a href="{% url 'catalog:product_detail' product.slug %}">{{ product.name }}</a>
+                    </h3>
+                    <span class="product-card-price">{{ product.price|floatformat:0 }} FCFA</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<section class="materials-section section-padding bg-dark text-light" style="background-image: linear-gradient(rgba(43, 30, 25, 0.85), rgba(43, 30, 25, 0.9)), url('{% static 'images/hero_bg.png' %}'); background-size: cover; background-attachment: fixed;">
+    <div class="container">
+        <div class="materials-grid">
+            <div class="materials-text-col reveal-fade">
+                <span class="section-tag tag-light">Savoir-Faire</span>
+                <h2 class="materials-title font-serif">L'amour de la fibre brute</h2>
+                <p>Nous sélectionnons rigoureusement des matières nobles au toucher exceptionnel et à l'impact environnemental minimal :</p>
+                
+                <ul class="materials-list">
+                    <li>
+                        <strong>Le Lin Éco-responsable</strong>
+                        <span>Cultivé localement, il offre une fraîcheur fluide et un drapé naturel inégalé.</span>
+                    </li>
+                    <li>
+                        <strong>La Laine d'Alpaga</strong>
+                        <span>D'une douceur et d'une chaleur incomparables, récoltée dans le respect de l'animal.</span>
+                    </li>
+                    <li>
+                        <strong>Le Coton Organique GOTS</strong>
+                        <span>Non traité chimiquement pour une pureté absolue contre la peau.</span>
+                    </li>
+                </ul>
+                <a href="{% url 'catalog:about' %}" class="btn btn-outline-light">Notre Charte de Transparence</a>
+            </div>
+            <div class="materials-visual-col reveal-fade" style="animation-delay: 0.2s;">
+                <div class="materials-card">
+                    <img src="{% static 'images/product_scarf.png' %}" alt="Tissage de laine d'alpaga">
+                    <div class="materials-card-caption">
+                        <p class="font-serif">"Tisser le temps pour créer l'éternel."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
